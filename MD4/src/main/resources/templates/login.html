@@ -7,6 +7,7 @@
     <title>Login / Registration Form</title>
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/assets/css/login.css">
+    <link rel="stylesheet" href="/assets/sweetalert2/v11.7.0/sweetalert2.min.css">
 </head>
 <body>
 <div class="container" id="container">
@@ -14,6 +15,10 @@
     <div class="form-container register-container">
         <form action="post">
             <h1>Register Account</h1>
+            <select class="input-select" name="roleUp" id="roleUp">
+                <option value="1">ADMIN</option>
+                <option value="2">USER</option>
+            </select>
             <input type="text" placeholder="Name" id="nameUp" name="nameUp">
             <input type="email" placeholder="Email" id="emailUp" name="emailUp">
             <input type="text" placeholder="User name" id="usernameUp" name="usernameUp">
@@ -76,6 +81,7 @@
 <script src="/assets/js/login.js"></script>
 <script src="/assets/jquery/v3.6.3/jquery-3.6.3.min.js"></script>
 <script src="/assets/js/appBase.js"></script>
+<script src="/assets/sweetalert2/v11.7.0/sweetalert2.all.min.js"></script>
 <script>
     const page = {
         urls: {
@@ -91,6 +97,83 @@
             commands: {},
         }
     }
+    page.elements.btnSignUp = $('#btnSignUp');
+    page.elements.btnLogIn = $('#btnLogin');
+    page.elements.usernameUp = $('#usernameUp');
+    page.elements.usernameIn = $('#usernameIn');
+    page.elements.passwordIn = $('#passwordIn');
+    page.elements.passwordUp = $('#passwordUp');
+    page.elements.role = $('#roleUp');
+
+    page.elements.btnSignUp.on('click', () => {
+        let user = {
+            username: page.elements.usernameUp.val(),
+            password: page.elements.passwordUp.val(),
+            role: {
+                id: page.elements.role.val()
+            }
+        }
+        $.ajax({
+            headers: {
+                "accept": "application/json",
+                "content-type": "application/json"
+            },
+            type: "POST",
+            url: AppBase.API_REGISTER,
+            data: JSON.stringify(user)
+        })
+            .done(()=>{
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Register successful',
+                    showConfirmButton: false,
+                    timer: 50000
+                })
+                page.elements.btnLogIn.click();
+                page.elements.usernameIn.val(user.username);
+                page.elements.passwordIn.val(user.password);
+            })
+            .fail((error)=>{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Register Fail !',
+                })
+            })
+    })
+
+    page.elements.btnLogIn.on('click',()=>{
+        let user = {
+            username : page.elements.usernameIn.val(),
+            password : page.elements.passwordIn.val()
+        }
+        $.ajax({
+            headers: {
+                "accept": "application/json",
+                "content-type": "application/json"
+            },
+            type: "POST",
+            url: AppBase.API_LOGIN,
+            data: JSON.stringify(user)
+        })
+            .done((data) =>{
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Login successful',
+                    showConfirmButton: false,
+                    timer: 50000
+                })
+            })
+            .fail((error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Login Fail!',
+                })
+            })
+    })
 </script>
 
 
