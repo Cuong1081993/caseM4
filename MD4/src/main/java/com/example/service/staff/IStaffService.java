@@ -11,5 +11,8 @@ public interface IStaffService extends IGeneralService<Staff> {
 
     Optional<StaffInfoDTO> getStaffInfoByUsername(String name);
     void create(StaffReqDTO staffReqDTO);
+    Boolean existsByEmail(String email);
+
+    void register(StaffReqDTO staffReqDTO);
 
 }

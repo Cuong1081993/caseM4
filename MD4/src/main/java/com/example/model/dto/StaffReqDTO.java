@@ -20,14 +20,12 @@ public class StaffReqDTO {
     private String password;
     private String fullName;
     private String email;
-    private RoleDTO roleDTO;
 
-    public Staff toStaff(User user) {
+    public Staff toStaff() {
         return new Staff()
                 .setId(id)
                 .setFullName(fullName)
                 .setEmail(email)
-                .setUser(user)
                 ;
     }
 }

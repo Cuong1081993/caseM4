@@ -24,8 +24,6 @@ public class UserDTO {
     @Size(max = 30, message = "Maximum password length 30 characters")
     private String password;
 
-    @Valid
-    private RoleDTO role;
 
     public UserDTO(Long id, String username) {
         this.id = id;
@@ -36,7 +34,6 @@ public class UserDTO {
         return new User()
                 .setId(id)
                 .setUsername(username)
-                .setPassword(password)
-                .setRole(role.toRole());
+                .setPassword(password);
     }
 }

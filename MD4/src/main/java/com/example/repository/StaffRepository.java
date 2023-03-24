@@ -22,4 +22,6 @@ public interface StaffRepository extends JpaRepository<Staff, Long> {
             "AND us.username = :username"
     )
     Optional<StaffInfoDTO> getStaffInfoByUserName(@Param("username")String username);
+
+    Boolean existsByEmail(String email);
 }

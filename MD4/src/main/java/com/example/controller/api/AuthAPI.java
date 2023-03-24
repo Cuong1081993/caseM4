@@ -7,6 +7,7 @@ import com.example.model.JwtResponse;
 import com.example.model.Role;
 import com.example.model.Staff;
 import com.example.model.User;
+import com.example.model.dto.StaffReqDTO;
 import com.example.model.dto.UserDTO;
 import com.example.model.dto.UserLoginDTO;
 import com.example.service.jwt.JwtService;
@@ -50,27 +51,20 @@ public class AuthAPI {
     private AppUtils appUtils;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Validated @RequestBody UserDTO userDTO, BindingResult bindingResult){
+    public ResponseEntity<?> register(@Validated @RequestBody StaffReqDTO staffReqDTO, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             return appUtils.mapErrorToResponse(bindingResult);
         }
-        Optional<Role> roleOptional = roleService.findById(userDTO.getId());
-        if (!roleOptional.isPresent()){
-            throw new DataInputException("Role is invalid");
-        }
-        Boolean existsUsername = userService.existsByUsername(userDTO.getUsername());
+        Boolean existsUsername = userService.existsByUsername(staffReqDTO.getUsername());
         if (existsUsername){
             throw new EmailExistsException("User name is exists");
         }
-        try {
-            Staff staff = new Staff();
-            User user = userService.save(userDTO.toUser());
-            staff.setUser(user);
-            staffService.save(staff);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        }catch (DataIntegrityViolationException e){
-            throw new DataInputException("Account information is not valid, please check again");
+        Boolean existsEmail = staffService.existsByEmail(staffReqDTO.getEmail());
+        if (existsEmail){
+            throw  new EmailExistsException("Email is exists");
         }
+        staffService.register(staffReqDTO);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginDTO userLoginDTO) {

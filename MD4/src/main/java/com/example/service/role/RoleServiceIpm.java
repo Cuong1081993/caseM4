@@ -49,4 +49,9 @@ public class RoleServiceIpm implements IRoleService{
     public boolean existByIdEqual(Long id) {
         return false;
     }
+
+    @Override
+    public Optional<Role> findByCode(String code) {
+        return roleRepository.findByCode(code);
+    }
 }

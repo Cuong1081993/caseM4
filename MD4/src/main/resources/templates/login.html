@@ -8,33 +8,25 @@
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/assets/css/login.css">
     <link rel="stylesheet" href="/assets/sweetalert2/v11.7.0/sweetalert2.min.css">
+    <link rel="stylesheet" href="/assets/izToast/css/iziToast.css">
 </head>
 <body>
 <div class="container" id="container">
-
     <div class="form-container register-container">
-        <form action="post">
+        <form>
             <h1>Register Account</h1>
-            <select class="input-select" name="roleUp" id="roleUp">
-                <option value="1">ADMIN</option>
-                <option value="2">USER</option>
-            </select>
-            <input type="text" placeholder="Name" id="nameUp" name="nameUp">
+            <input type="text" placeholder="Name" id="fullNameUp" name="nameUp">
             <input type="email" placeholder="Email" id="emailUp" name="emailUp">
             <input type="text" placeholder="User name" id="usernameUp" name="usernameUp">
             <input type="password" placeholder="Password" id="passwordUp" name="passwordUp">
-            <button class="submit-btn" id="btnSignUp">Register</button>
-            <span>or use your account</span>
-            <div class="social-container">
-                <a href="#" class="social"><i class="lni lni-facebook-fill"></i></a>
-                <a href="#" class="social"><i class="lni lni-google"></i></a>
-                <a href="#" class="social"><i class="lni lni-linkedin-original"></i></a>
-            </div>
+
         </form>
+        <div><button class="submit-btn" id="btnSignUp" style="top: -100px;left: 70px">Register</button>
+        </div>
     </div>
 
     <div class="form-container login-container">
-        <form action="post">
+        <form>
             <h1>Login Account</h1>
             <input type="text" placeholder="User name" id="usernameIn">
             <input type="password" placeholder="Password" id="passwordIn">
@@ -47,14 +39,8 @@
                     <a href="#">Forgot password?</a>
                 </div>
             </div>
-            <button class="submit-btn" id="btnLogin">Login</button>
-            <span>or use your account</span>
-            <div class="social-container">
-                <a href="#" class="social"><i class="lni lni-facebook-fill"></i></a>
-                <a href="#" class="social"><i class="lni lni-google"></i></a>
-                <a href="#" class="social"><i class="lni lni-linkedin-original"></i></a>
-            </div>
         </form>
+        <button class="submit-btn" id="btnLogin" style="top: -100px; left: 70px">Login</button>
     </div>
 
     <div class="overlay-container">
@@ -82,6 +68,7 @@
 <script src="/assets/jquery/v3.6.3/jquery-3.6.3.min.js"></script>
 <script src="/assets/js/appBase.js"></script>
 <script src="/assets/sweetalert2/v11.7.0/sweetalert2.all.min.js"></script>
+<script src="/assets/izToast/js/iziToast.js"></script>
 <script>
     const page = {
         urls: {
@@ -99,19 +86,26 @@
     }
     page.elements.btnSignUp = $('#btnSignUp');
     page.elements.btnLogIn = $('#btnLogin');
+
+    page.elements.fullNameUp = $('#fullNameUp');
+    page.elements.emailUp = $('#emailUp');
     page.elements.usernameUp = $('#usernameUp');
+    page.elements.passwordUp = $('#passwordUp');
+
+
+    page.elements.fullNameIn = $('#fullNameIn');
+    page.elements.emailIn = $('#emailIn');
     page.elements.usernameIn = $('#usernameIn');
     page.elements.passwordIn = $('#passwordIn');
-    page.elements.passwordUp = $('#passwordUp');
-    page.elements.role = $('#roleUp');
+
 
     page.elements.btnSignUp.on('click', () => {
         let user = {
+            fullName: page.elements.fullNameUp.val(),
+            email: page.elements.emailUp.val(),
             username: page.elements.usernameUp.val(),
             password: page.elements.passwordUp.val(),
-            role: {
-                id: page.elements.role.val()
-            }
+
         }
         $.ajax({
             headers: {
@@ -119,34 +113,31 @@
                 "content-type": "application/json"
             },
             type: "POST",
-            url: AppBase.API_REGISTER,
+            url: page.urls.insertRegister,
             data: JSON.stringify(user)
         })
-            .done(()=>{
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Register successful',
-                    showConfirmButton: false,
-                    timer: 50000
-                })
-                page.elements.btnLogIn.click();
+            .done(() => {
+                iziToast.success({
+                    title: 'Done!',
+                    message: 'Register Successfully!',
+                    position :'topRight'
+                });
+                container.classList.remove("right-panel-active");
                 page.elements.usernameIn.val(user.username);
                 page.elements.passwordIn.val(user.password);
             })
-            .fail((error)=>{
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Register Fail !',
-                })
+            .fail((error) => {
+                iziToast.warning({
+                    title: 'Caution',
+                    message: 'Register Fail !',
+                });
             })
     })
 
-    page.elements.btnLogIn.on('click',()=>{
+    page.elements.btnLogIn.on('click', () => {
         let user = {
-            username : page.elements.usernameIn.val(),
-            password : page.elements.passwordIn.val()
+            username: page.elements.usernameIn.val(),
+            password: page.elements.passwordIn.val()
         }
         $.ajax({
             headers: {
@@ -154,24 +145,24 @@
                 "content-type": "application/json"
             },
             type: "POST",
-            url: AppBase.API_LOGIN,
+            url: page.urls.insertLogin,
             data: JSON.stringify(user)
         })
-            .done((data) =>{
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Login successful',
-                    showConfirmButton: false,
-                    timer: 50000
-                })
+            .done((data) => {
+                iziToast.success({
+                    title: 'Success',
+                    message: 'Login Successfully!',
+                    position :'topRight'
+                });
+                setTimeout(()=>{
+                    location.href = "/customers";
+                },2000)
             })
             .fail((error) => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Login Fail!',
-                })
+                iziToast.warning({
+                    title: 'Caution',
+                    message: 'Login Fail !',
+                });
             })
     })
 </script>
