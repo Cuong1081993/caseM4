@@ -1,7 +1,7 @@
 package com.example.repository;
 
-import com.example.model.User;
-import com.example.model.dto.UserDTO;
+import com.example.model.auth.User;
+import com.example.model.dto.authDTO.UserDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

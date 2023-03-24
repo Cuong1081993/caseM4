@@ -1,7 +1,7 @@
 package com.example.repository;
 
-import com.example.model.Staff;
-import com.example.model.dto.StaffInfoDTO;
+import com.example.model.auth.Staff;
+import com.example.model.dto.authDTO.StaffInfoDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

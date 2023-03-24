@@ -8,7 +8,6 @@ public interface IGeneralService<T> {
 
     Optional<T> findById(Long id);
 
-    T getById(Long id);
 
     T save(T t);
 
@@ -16,5 +15,5 @@ public interface IGeneralService<T> {
 
     void deletedById(Long id);
 
-    boolean existByIdEqual(Long id);
+    boolean existById(Long id);
 }

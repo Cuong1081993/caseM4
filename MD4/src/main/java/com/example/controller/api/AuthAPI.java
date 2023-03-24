@@ -1,22 +1,17 @@
 package com.example.controller.api;
 
 
-import com.example.exception.DataInputException;
 import com.example.exception.EmailExistsException;
 import com.example.model.JwtResponse;
-import com.example.model.Role;
-import com.example.model.Staff;
-import com.example.model.User;
-import com.example.model.dto.StaffReqDTO;
-import com.example.model.dto.UserDTO;
-import com.example.model.dto.UserLoginDTO;
-import com.example.service.jwt.JwtService;
-import com.example.service.role.IRoleService;
-import com.example.service.staff.IStaffService;
-import com.example.service.user.IUserService;
+import com.example.model.auth.User;
+import com.example.model.dto.authDTO.StaffReqDTO;
+import com.example.model.dto.authDTO.UserLoginDTO;
+import com.example.service.auth.jwt.JwtService;
+import com.example.service.auth.role.IRoleService;
+import com.example.service.auth.staff.IStaffService;
+import com.example.service.auth.user.IUserService;
 import com.example.utils.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -29,9 +24,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
-import java.util.Stack;
 
 @RestController
 @RequestMapping("/api/auth")
