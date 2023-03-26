@@ -13,20 +13,20 @@
 <body>
 <div class="container" id="container">
     <div class="form-container register-container">
-        <form>
+        <form id="frmRegister">
             <h1>Register Account</h1>
-            <input type="text" placeholder="Name" id="fullNameUp" name="nameUp">
+            <input type="text" placeholder="Name" id="fullNameUp" name="fullNameUp">
             <input type="email" placeholder="Email" id="emailUp" name="emailUp">
             <input type="text" placeholder="User name" id="usernameUp" name="usernameUp">
             <input type="password" placeholder="Password" id="passwordUp" name="passwordUp">
 
         </form>
-        <div><button class="submit-btn" id="btnSignUp" style="top: -100px;left: 70px">Register</button>
+        <div><button class="submit-btn" id="btnSignUp" style="top: -80px;left: 70px">Register</button>
         </div>
     </div>
 
     <div class="form-container login-container">
-        <form>
+        <form id="frmLogin">
             <h1>Login Account</h1>
             <input type="text" placeholder="User name" id="usernameIn">
             <input type="password" placeholder="Password" id="passwordIn">
@@ -66,6 +66,7 @@
 
 <script src="/assets/js/login.js"></script>
 <script src="/assets/jquery/v3.6.3/jquery-3.6.3.min.js"></script>
+<script src="/assets/jquery-validate/v1.19.5/jquery.validate.min.js"></script>
 <script src="/assets/js/appBase.js"></script>
 <script src="/assets/sweetalert2/v11.7.0/sweetalert2.all.min.js"></script>
 <script src="/assets/izToast/js/iziToast.js"></script>
@@ -84,6 +85,9 @@
             commands: {},
         }
     }
+
+    page.elements.frmRegister = $('#frmRegister');
+    page.elements.frmLogin = $('#frmLogin')
     page.elements.btnSignUp = $('#btnSignUp');
     page.elements.btnLogIn = $('#btnLogin');
 
@@ -164,6 +168,61 @@
                     message: 'Login Fail !',
                 });
             })
+    })
+
+    page.elements.frmRegister.validate({
+        rules: {
+            fullNameUp: {
+                required: true,
+                minlength: 4,
+                maxlength: 25
+            },
+            emailUp: {
+                required: true,
+                minlength: 4,
+                maxlength: 40
+            },
+            usernameUp: {
+                required: true,
+                minlength: 3,
+                maxlength: 11
+            },
+            passwordUp: {
+                required: true,
+                minlength: 5
+            }
+        },
+        messages: {
+            fullNameUp: {
+                required: 'Full name is required',
+                minlength: 'Min character of full name is ${0}',
+                maxlength: 'Max character of full name is ${0}'
+            },
+            emailUp: {
+                required: 'Email is required',
+                minlength: 'Min character of email is ${0}',
+                maxlength: 'Max character of email is ${0}'
+            },
+            usernameUp: {
+                required: "Username  is required."
+            },
+            passwordUp: {
+                required: "Password is required.",
+                minlength: "Password must be more than 5 letters"
+            }
+        },
+        showErrors: function (errorMap, errorList) {
+            if (this.numberOfInvalids() > 0) {
+                $('#modalCreateCustomer .modal-alert-danger').removeClass("hide").addClass('show');
+            } else {
+                $("#modalCreateCustomer .modal-alert-danger").removeClass("show").addClass("hide").empty();
+                $("#frmCreate input .error").removeClass("error");
+            }
+            this.defaultShowErrors();
+        },
+        submitHandler: () => {
+            page.elements.btnSignUp();
+        }
     })
 </script>
 

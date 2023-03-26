@@ -1,0 +1,40 @@
+<th:block th:fragment="modal_deActive">
+    <div class="modal fade" id="modalDeActive" data-bs-backdrop="static" data-bs-keyboard="false"
+         tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5"> De-Active Customer List</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                        <div id="frmDeActive">
+                                <table id="tbDeActive" class="table table-hover mt-2">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Avatar</th>
+                                        <th class="text-center">Full Name</th>
+                                        <th class="text-center">Email</th>
+                                        <th class="text-center">Phone</th>
+                                        <th class="text-center">Province</th>
+                                        <th class="text-center">District</th>
+                                        <th class="text-center">Ward</th>
+                                        <th class="text-center">Address</th>
+                                        <th colspan="5" style="text-align: center;">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>

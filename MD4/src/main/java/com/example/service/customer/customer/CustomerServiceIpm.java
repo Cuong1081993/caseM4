@@ -69,6 +69,11 @@ public class CustomerServiceIpm implements ICustomerService {
     }
 
     @Override
+    public void active(Long customerId) {
+        customerRepository.active(customerId);
+    }
+
+    @Override
     public void deletedById(Long id) {
 
     }
@@ -86,6 +91,11 @@ public class CustomerServiceIpm implements ICustomerService {
     @Override
     public List<CustomerResDTO> findAllByDeletedIsFalse() {
         return customerRepository.findAllByDeletedIsFalse();
+    }
+
+    @Override
+    public List<CustomerResDTO> findAllByDeletedIsTrue() {
+        return customerRepository.findAllByDeletedIsTrue();
     }
 
     @Override

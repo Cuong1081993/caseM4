@@ -3,6 +3,8 @@ class AppBase {
 
     static API_SERVER = this.DOMAIN_SERVER + '/api';
     static API_CUSTOMER = this.API_SERVER + '/customers';
+    static API_DEACTIVE = this.API_SERVER + '/de-activeCustomers';
+
 
     static API_PROVINCE = "https://vapi.vnappmob.com/api/province";
 

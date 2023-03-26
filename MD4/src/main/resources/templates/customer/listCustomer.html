@@ -60,12 +60,15 @@
         <th:block th:replace="customer/modalUpdate :: modal_update"></th:block>
         <!--  END MODAL UPDATE -->
 
+        <!--MODAL DE-ACTIVE-->
+        <th:block th:replace="customer/modalDeActive :: modal_deActive"></th:block>
+        <!--END MODAL DE-ACTIVE-->
     </div>
     <!-- ============================================================== -->
     <!-- End Page content -->
     <!-- ============================================================== -->
     <div id="loading">
-        <img src="/assets/image/heart.gif" alt="">
+        <img src="/assets/image/loading.gif" alt="">
     </div>
 </div>
 <!-- END wrapper -->
@@ -88,10 +91,12 @@
     const page = {
         urls: {
             getAllCustomer: AppBase.API_CUSTOMER,
+            getAllCustomerDeActive: AppBase.API_DEACTIVE,
             findCustomerById: AppBase.API_CUSTOMER,
             doCreate: AppBase.API_CUSTOMER,
             doUpdate: AppBase.API_CUSTOMER,
-            doDeActive : AppBase.API_CUSTOMER + '/de-active',
+            doDeActive: AppBase.API_CUSTOMER + '/de-active',
+            doActive : AppBase.API_CUSTOMER + '/active',
             getAllProvinces: AppBase.API_PROVINCE,
             getAllDistricts: AppBase.API_PROVINCE + '/district',
             getAllWards: AppBase.API_PROVINCE + '/ward',
@@ -116,6 +121,11 @@
     page.elements.loading = $('#loading');
 
     page.elements.btnShowCreateModal = $('#btnShowCreateModal');
+
+    page.elements.btnShowDeActiveModal = $('#btnShowDeActiveModal');
+
+    page.dialogs.elements.modalDeActive = $('#modalDeActive');
+    page.dialogs.elements.frmDeActive = $('#frmDeActive');
 
     page.dialogs.elements.modalCreateCustomer = $('#modalCreateCustomer');
     page.dialogs.elements.frmCreate = $('#frmCreate');
@@ -202,6 +212,32 @@
             })
     }
 
+    page.loadData.getAllCustomerDeActive = () => {
+        page.commands.showLoading();
+
+        $.ajax({
+            type: 'GET',
+            url: page.urls.getAllCustomerDeActive
+        })
+            .done((data) => {
+                $.each(data, (i, item) => {
+                    customer = item;
+                    locationRegion = customer.locationRegion;
+                    customerAvatar = customer.customerAvatar;
+
+                    let str = renderDeActiveCustomer(customer, customerAvatar, locationRegion);
+                    $('#tbDeActive tbody').prepend(str);
+                })
+            })
+
+            .fail((error) => {
+                console.log(error)
+            })
+            .always(() => {
+                page.commands.closeLoading();
+            })
+    }
+
     page.loadData.getAllProvinces = () => {
         return $.ajax({
             type: 'GET',
@@ -278,6 +314,11 @@
         page.dialogs.elements.modalCreateCustomer.modal('show');
     })
 
+    page.elements.btnShowDeActiveModal.on('click', () => {
+        page.dialogs.elements.modalDeActive.modal('show');
+    })
+
+
     page.dialogs.commands.doCreate = () => {
         page.commands.showLoading();
         console.log('loading')
@@ -337,6 +378,7 @@
 
                 addEventUpdate();
                 addEventDeActive();
+
 
             })
             .fail((error) => {
@@ -467,7 +509,7 @@
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Yes, Block it!'
             })
                 .then((result) => {
                     if (result.isConfirmed) {
@@ -486,7 +528,7 @@
                                 Swal.fire({
                                     position: 'center',
                                     icon: 'success',
-                                    title: 'Delete customer successful',
+                                    title: 'Block customer successful',
                                     showConfirmButton: false,
                                     timer: 1500
                                 })
@@ -507,7 +549,55 @@
                 })
         })
     }
+    function addEventActive() {
+        $('.active').on('click', function (){
+            let id = $(this).data('id');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Active it!'
+            })
+                .then((result) => {
+                    if (result.isConfirmed) {
 
+                        $.ajax({
+                            headers: {
+                                "accept": "application/json",
+                                "content-type": "application/json"
+                            },
+                            type: "DELETE",
+                            url: page.urls.doActive + '/' + id
+                        })
+                            .done((data) => {
+                                $("#tr_" + id).remove();
+
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'success',
+                                    title: 'Active customer successfully',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                            })
+                            .fail((jqXHR) => {
+                                let message = jqXHR.responseJSON.message
+
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'error',
+                                    title: message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                            })
+                    }
+                })
+        })
+    }
     function renderCustomer(customer, avatar, locationRegion) {
         let image_thumbnail = `${AppBase.API_CLOUDINARY}/${AppBase.SCALE_IMAGE_W_80_H_80_Q_100}/${avatar.fileFolder}/${avatar.fileName}`;
         return `
@@ -526,12 +616,40 @@
 
                         <td>
                             <button class="btn btn-outline-secondary update" data-id="${customer.id}">
+                            <i class="fa fa-pencil-ruler"></i>
                                 Edit
                             </button>
                         </td>
                         <td>
                             <button class="btn btn-outline-danger deactive" data-id="${customer.id}">
-                                Delete
+                           <i class="fa fa-ban"></i>
+                                De-Active
+                            </button>
+                        </td>
+                    </tr>
+                `;
+    }
+
+    function renderDeActiveCustomer(customer, avatar, locationRegion) {
+        let image_thumbnail = `${AppBase.API_CLOUDINARY}/${AppBase.SCALE_IMAGE_W_80_H_80_Q_100}/${avatar.fileFolder}/${avatar.fileName}`;
+        return `
+                    <tr id="tr_${customer.id}">
+                        <td>${customer.id}</td>
+                        <td>
+                            <img src="${image_thumbnail}" alt="">
+                        </td>
+                        <td>${customer.fullName}</td>
+                        <td>${customer.email}</td>
+                        <td>${customer.phone}</td>
+                        <td>${locationRegion.provinceName}</td>
+                        <td>${locationRegion.districtName}</td>
+                        <td>${locationRegion.wardName}</td>
+                        <td>${locationRegion.address}</td>
+
+                        <td>
+                            <button class="btn btn-outline-success active" data-id="${customer.id}">
+                           <i class="fa fa-check"></i>
+                                Active
                             </button>
                         </td>
                     </tr>
@@ -622,6 +740,8 @@
 
     page.commands.loadData = () => {
         page.loadData.getAllCustomers();
+
+        // page.loadData.getAllCustomerDeActive();
 
         page.loadData.getAllProvinces().then(() => {
 

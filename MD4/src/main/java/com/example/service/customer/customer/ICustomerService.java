@@ -31,4 +31,7 @@ public interface ICustomerService extends IGeneralService<Customer> {
 
     void deActive(Long customerId);
 
+    List<CustomerResDTO> findAllByDeletedIsTrue();
+
+    void active(Long customerId);
 }

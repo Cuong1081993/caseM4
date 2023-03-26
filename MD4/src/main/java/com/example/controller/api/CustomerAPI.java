@@ -40,7 +40,7 @@ public class CustomerAPI {
     private IUploadService uploadService;
 
     @GetMapping
-    private ResponseEntity<?> getAll() {
+    public ResponseEntity<?> getAll() {
 
         List<CustomerResDTO> customerResDTOS = customerService.findAllByDeletedIsFalse();
         List<CustomerDTO> customerDTOS = new ArrayList<>();
@@ -188,4 +188,13 @@ public class CustomerAPI {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @DeleteMapping("/active/{customerId}")
+    public ResponseEntity<?> active(@PathVariable Long customerId){
+        Optional<Customer> customerOptional = customerService.findById(customerId);
+        if (!customerOptional.isPresent()){
+            throw new DataInputException("Customer is Invalid");
+        }
+        customerService.active(customerId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

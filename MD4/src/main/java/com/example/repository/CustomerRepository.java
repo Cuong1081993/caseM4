@@ -75,4 +75,27 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     void deActive(@Param("customerId") Long customerId);
 
 
+    @Modifying
+    @Query("UPDATE Customer AS cus " +
+            "SET cus.deleted = FALSE " +
+            "WHERE cus.id = :customerId")
+    void active(@Param("customerId") Long customerId);
+
+    @Query("SELECT NEW com.example.model.dto.customerDTO.CustomerResDTO (" +
+            "cus.id, " +
+            "cus.fullName, " +
+            "cus.email, " +
+            "cus.phone, " +
+            "ca.id," +
+            "ca.fileFolder, " +
+            "ca.fileName, " +
+            "ca.fileUrl, " +
+            "cus.locationRegion" +
+            ")" +
+            "FROM Customer AS cus " +
+            "LEFT JOIN CustomerAvatar AS ca " +
+            "ON ca.customer = cus " +
+            "WHERE cus.deleted = true"
+    )
+    List<CustomerResDTO> findAllByDeletedIsTrue();
 }
