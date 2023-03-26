@@ -94,7 +94,7 @@ public class CustomerServiceIpm implements ICustomerService {
     }
 
     @Override
-    public Boolean existsByEmailEquals(String email) {
+    public Boolean existsByEmail(String email) {
         return customerRepository.existsByEmailEquals(email);
     }
 
@@ -139,11 +139,14 @@ public class CustomerServiceIpm implements ICustomerService {
         customerRepository.save(customer);
 
         Optional<CustomerAvatar> customerAvatarOptional = customerAvatarRepository.findByCustomer(customer);
+
         CustomerAvatar customerAvatar = new CustomerAvatar();
+
         if (!customerAvatarOptional.isPresent()) {
             customerAvatar.setCustomer(customer);
             customerAvatarRepository.save(customerAvatar);
             uploadAndSaveCustomerAvatar(avatarFile, customerAvatar);
+
         } else {
             customerAvatar = customerAvatarOptional.get();
             uploadService.destroyImage(customerAvatar.getCloudId(), uploadUtils.buildImageUploadParams(customerAvatar));

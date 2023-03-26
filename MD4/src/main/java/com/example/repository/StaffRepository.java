@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface StaffRepository extends JpaRepository<Staff, Long> {
 
-    @Query("SELECT NEW com.example.model.dto.StaffInfoDTO (" +
+    @Query("SELECT NEW com.example.model.dto.authDTO.StaffInfoDTO (" +
             "st.fullName, " +
             "st.email" +
             ") " +

@@ -31,6 +31,8 @@ public class Customer extends BaseEntity {
     private String phone;
 
 
+
+
     @ManyToOne
     @JoinColumn(name = "location_region_id", referencedColumnName = "id", nullable = false)
     private LocationRegion locationRegion;
@@ -40,6 +42,7 @@ public class Customer extends BaseEntity {
                 .setId(id)
                 .setFullName(fullName)
                 .setEmail(email)
+//                .setCustomerAvatar(customerAvatar.toCustomerAvatarDTO())
                 .setLocationRegion(locationRegion.toLocationRegionDTO())
                 ;
     }

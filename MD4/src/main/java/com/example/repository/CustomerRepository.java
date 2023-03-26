@@ -18,15 +18,15 @@ import java.util.Optional;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
     @Query("SELECT NEW com.example.model.dto.customerDTO.CustomerResDTO (" +
-            "cus.id, " +
-            "cus.fullName, " +
-            "cus.email, " +
-            "cus.phone, " +
-            "ca.id, " +
-            "ca.fileFolder, " +
-            "ca.fileName, " +
-            "ca.fileUrl, " +
-            "cus.locationRegion) " +
+                "cus.id, " +
+                "cus.fullName, " +
+                "cus.email, " +
+                "cus.phone, " +
+                "ca.id, " +
+                "ca.fileFolder, " +
+                "ca.fileName, " +
+                "ca.fileUrl, " +
+                "cus.locationRegion) " +
             "FROM Customer AS cus " +
             "LEFT JOIN CustomerAvatar as ca " +
             "ON ca.customer = cus " +
@@ -36,16 +36,16 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     Optional<CustomerResDTO> findCustomerResDTOById(@Param("id") Long id);
 
     @Query("SELECT NEW com.example.model.dto.customerDTO.CustomerResDTO (" +
-            "cus.id, " +
-            "cus.fullName, " +
-            "cus.email, " +
-            "cus.phone, " +
-            "ca.id," +
-            "ca.fileFolder, " +
-            "ca.fileName, " +
-            "ca.fileUrl, " +
-            "cus.locationRegion" +
-            ")" +
+                    "cus.id, " +
+                    "cus.fullName, " +
+                    "cus.email, " +
+                    "cus.phone, " +
+                    "ca.id," +
+                    "ca.fileFolder, " +
+                    "ca.fileName, " +
+                    "ca.fileUrl, " +
+                    "cus.locationRegion" +
+                    ")" +
             "FROM Customer AS cus " +
             "LEFT JOIN CustomerAvatar AS ca " +
             "ON ca.customer = cus " +
@@ -69,5 +69,5 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
 
 
-    CustomerUpdateAvatarResDTO updateWithAvatar(Customer customer, MultipartFile avatarFile) throws IOException;
+
 }

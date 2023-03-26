@@ -21,7 +21,7 @@ public interface ICustomerService extends IGeneralService<Customer> {
 
     List<Customer> findAllByIdNot(Long id);
 
-    Boolean existsByEmailEquals(String email);
+    Boolean existsByEmail(String email);
 
     CustomerCreateAvatarResDTO createWithAvatar(Customer customer, MultipartFile avatarFile);
 

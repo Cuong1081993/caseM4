@@ -22,7 +22,7 @@ public class CustomerAvatarServiceIpm implements ICustomerAvatarService {
 
     @Override
     public Optional<CustomerAvatar> findById(String id) {
-        return customerAvatarRepository.findById(Long.valueOf(id));
+        return customerAvatarRepository.findById(id);
     }
 
 

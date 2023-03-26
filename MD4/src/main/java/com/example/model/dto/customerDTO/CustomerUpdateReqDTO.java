@@ -25,13 +25,13 @@ public class CustomerUpdateReqDTO {
     private String wardName;
     private String address;
 
-    public LocationRegionDTO locationRegionDTO(){
+    public LocationRegionDTO toLocationRegionDTO(){
         return new LocationRegionDTO()
                 .setId(id)
                 .setProvinceId(provinceId)
                 .setProvinceName(provinceName)
                 .setDistrictId(districtId)
-                .setProvinceName(provinceName)
+                .setDistrictName(districtName)
                 .setWardId(wardId)
                 .setWardName(wardName)
                 .setAddress(address)

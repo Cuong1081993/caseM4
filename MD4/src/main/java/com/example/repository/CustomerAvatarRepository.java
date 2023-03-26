@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface CustomerAvatarRepository extends JpaRepository<CustomerAvatar, Long> {
+public interface CustomerAvatarRepository extends JpaRepository<CustomerAvatar, String> {
     Optional<CustomerAvatar> findByCustomer(Customer customer);
 }

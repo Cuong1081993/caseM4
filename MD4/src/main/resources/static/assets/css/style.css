@@ -56,3 +56,11 @@ label.error {
     color: #842029;
     display: list-item;
 }
+
+
+#loading {
+    left: 50%;
+    top: 50vh;
+    position: absolute;
+    z-index: 9999;
+}

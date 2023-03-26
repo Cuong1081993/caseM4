@@ -42,7 +42,7 @@
             <!-- item-->
             <a href="javascript:void(0);" class="dropdown-item notify-item active">
               <div class="notify-icon">
-                <img src="/assets/images/users/user-1.jpg" class="img-fluid rounded-circle" alt=""> </div>
+                <img src="/assets/pageAssets/images/users/user-1.jpg" class="img-fluid rounded-circle" alt=""> </div>
               <p class="notify-details">Cristina Pride</p>
               <p class="text-muted mb-0 user-msg">
                 <small>Hi, How are you? What about our next meeting</small>
@@ -62,7 +62,7 @@
             <!-- item-->
             <a href="javascript:void(0);" class="dropdown-item notify-item">
               <div class="notify-icon">
-                <img src="/assets/images/users/user-4.jpg" class="img-fluid rounded-circle" alt=""> </div>
+                <img src="/assets/pageAssets/images/users/user-4.jpg" class="img-fluid rounded-circle" alt=""> </div>
               <p class="notify-details">Karen Robinson</p>
               <p class="text-muted mb-0 user-msg">
                 <small>Wow ! this admin looks good and awesome design</small>
@@ -112,9 +112,9 @@
 
       <li class="dropdown notification-list">
         <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-          <img src="/assets/images/users/user-1.jpg" alt="user-image" class="rounded-circle">
-          <span class="pro-user-name ml-1">
-                                Marcia J. <i class="mdi mdi-chevron-down"></i>
+          <img src="/assets/pageAssets/images/users/user-1.jpg" alt="user-image" class="rounded-circle">
+          <span class="pro-user-name ml-1" th:text="${fullName}">
+                                 <i class="mdi mdi-chevron-down"></i>
                             </span>
         </a>
         <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
@@ -167,12 +167,12 @@
     <div class="logo-box">
       <a href="index.html" class="logo text-center">
                         <span class="logo-lg">
-                            <img src="/assets/images/logo-light.png" alt="" height="24">
+                            <img src="/assets/pageAssets/images/logo-light.png" alt="" height="24">
                           <!-- <span class="logo-lg-text-light">Upvex</span> -->
                         </span>
         <span class="logo-sm">
                             <!-- <span class="logo-sm-text-dark">X</span> -->
-                            <img src="/assets/images/logo-sm.png" alt="" height="28">
+                            <img src="/assets/pageAssets/images/logo-sm.png" alt="" height="28">
                         </span>
       </a>
     </div>
@@ -187,7 +187,7 @@
       </li>
 
       <li class="dropdown dropdown-mega d-none d-lg-block">
-        <a class="nav-link dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+        <a class="nav-link  waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
           Menu
           <i class="mdi mdi-chevron-down"></i>
         </a>
@@ -197,18 +197,10 @@
 
               <div class="row">
                 <div class="col-md-4">
-                  <h5 class="text-dark mt-0">UI Components</h5>
+                  <h5 class="text-dark mt-0">Action</h5>
                   <ul class="list-unstyled megamenu-list mt-2">
                     <li>
-                      <a href="javascript:void(0);">Tour Page</a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="col-md-4">
-                  <h5 class="text-dark mt-0">Applications</h5>
-                  <ul class="list-unstyled megamenu-list mt-2">
-                    <li>
-                      <a href="javascript:void(0);">Email Pages</a>
+                      <a href="javascript:void(0);" id="btnShowCreateModal">Create New Customer</a>
                     </li>
                     <li>
                       <a href="javascript:void(0);">Profile</a>

@@ -27,10 +27,10 @@ public class CustomerUpdateAvatarResDTO {
 
 
     public CustomerUpdateAvatarResDTO(Customer customer, LocationRegion locationRegion, CustomerAvatarDTO customerAvatarDTO) {
-        this.id = id;
-        this.fullName = fullName;
-        this.email = email;
-        this.phone = phone;
+        this.id = customer.getId();
+        this.fullName = customer.getFullName();
+        this.email = customer.getEmail();
+        this.phone = customer.getPhone();
         this.locationRegion = locationRegion.toLocationRegionDTO();
         this.customerAvatar = customerAvatarDTO;
     }
