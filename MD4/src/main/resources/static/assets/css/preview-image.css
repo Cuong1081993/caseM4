@@ -13,11 +13,11 @@
     overflow: hidden;
     cursor: pointer;
 }
-.wrapper.active{
+.wrapper{
     border: none;
 }
 
-.wrapper.active:hover > .clear-image-preview i{
+.wrapper:hover > .clear-image-preview i{
     display: block;
 }
 
@@ -77,7 +77,7 @@
     background: linear-gradient(135deg,#3a8ffe 0%,#9658fe 100%);
 }
 
-.wrapper.active:hover .file-name{
+.wrapper:hover .file-name{
     display: block;
 }
 

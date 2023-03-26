@@ -228,6 +228,7 @@
                     let str = renderDeActiveCustomer(customer, customerAvatar, locationRegion);
                     $('#tbDeActive tbody').prepend(str);
                 })
+                addEventActive();
             })
 
             .fail((error) => {
@@ -308,10 +309,12 @@
 
     page.dialogs.elements.modalCreateCustomer.on('hidden.bs.modal', () => {
         page.dialogs.elements.frmCreate[0].reset();
+        page.dialogs.commands.clearImagePreview();
     })
 
     page.elements.btnShowCreateModal.on('click', () => {
         page.dialogs.elements.modalCreateCustomer.modal('show');
+        page.dialogs.commands.clearImagePreview();
     })
 
     page.elements.btnShowDeActiveModal.on('click', () => {
@@ -378,6 +381,7 @@
 
                 addEventUpdate();
                 addEventDeActive();
+
 
 
             })
@@ -453,6 +457,7 @@
                 $('.deactive').off('click');
                 addEventUpdate();
                 addEventDeActive();
+
             })
             .fail((error) => {
                 iziToast.error({
@@ -525,6 +530,15 @@
                             .done((data) => {
                                 $("#tr_" + id).remove();
 
+                                customer = data;
+                                customerAvatar = customer.customerAvatar;
+                                locationRegion = customer.locationRegion;
+                                let str = renderDeActiveCustomer(customer, customerAvatar, locationRegion);
+                                $('#tbDeActive tbody').prepend(str);
+
+                                $('.active').off('click');
+                                addEventActive();
+
                                 Swal.fire({
                                     position: 'center',
                                     icon: 'success',
@@ -549,6 +563,7 @@
                 })
         })
     }
+
     function addEventActive() {
         $('.active').on('click', function (){
             let id = $(this).data('id');
@@ -575,6 +590,15 @@
                             .done((data) => {
                                 $("#tr_" + id).remove();
 
+                                customer = data;
+                                customerAvatar = customer.customerAvatar;
+                                locationRegion = customer.locationRegion;
+                                let str = renderCustomer(customer, customerAvatar, locationRegion);
+                                $('#tbCustomer tbody').prepend(str);
+
+                                $('.deactive').off('click');
+                                addEventDeActive();
+
                                 Swal.fire({
                                     position: 'center',
                                     icon: 'success',
@@ -598,6 +622,7 @@
                 })
         })
     }
+
     function renderCustomer(customer, avatar, locationRegion) {
         let image_thumbnail = `${AppBase.API_CLOUDINARY}/${AppBase.SCALE_IMAGE_W_80_H_80_Q_100}/${avatar.fileFolder}/${avatar.fileName}`;
         return `
@@ -658,11 +683,11 @@
 
     page.dialogs.commands.loadImageToCanvas = (imageFile, fileType, imageUrl) => {
         page.dialogs.elements.imagePreviewCanvas.css("display", "");
-        page.dialogs.elements.wrapper.addClass("active");
+
         page.dialogs.elements.wrapperContent.css("opacity", 0);
 
         page.dialogs.elements.imagePreviewCanvasUp.css("display", "");
-        page.dialogs.elements.wrapper.addClass("active");
+
         page.dialogs.elements.wrapperContent.css("opacity", 0);
 
         let imageObj = new Image();
@@ -698,17 +723,18 @@
                 }
             }
         } else {
-            page.dialogs.elements.clearImagePreview();
+            page.dialogs.commands.clearImagePreview();
         }
     }
 
     page.dialogs.commands.clearImagePreview = () => {
-        page.dialogs.commands.clearImagePreview = () => {
-            page.dialogs.elements.imageFile.val("");
-            page.dialogs.elements.imagePreviewCanvas.css("display", "none");
-            page.dialogs.elements.wrapper.removeClass("active");
-            page.dialogs.elements.wrapperContent.css("opacity", 1);
-        }
+        page.dialogs.elements.imageFile.val("");
+        page.dialogs.elements.imagePreviewCanvas.css("display", "none");
+        page.dialogs.elements.wrapperContent.css("opacity", 1);
+
+        page.dialogs.elements.imageFileUp.val("");
+        page.dialogs.elements.imagePreviewCanvasUp.css("display", "none");
+        page.dialogs.elements.wrapperContent.css("opacity", 1);
     }
 
     page.commands.handleChangeProvince = (elemProvince, elemDistrict, elemWard) => {
@@ -741,7 +767,7 @@
     page.commands.loadData = () => {
         page.loadData.getAllCustomers();
 
-        // page.loadData.getAllCustomerDeActive();
+        page.loadData.getAllCustomerDeActive();
 
         page.loadData.getAllProvinces().then(() => {
 

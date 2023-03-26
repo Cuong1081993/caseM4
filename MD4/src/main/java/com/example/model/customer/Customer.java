@@ -1,7 +1,9 @@
 package com.example.model.customer;
 
 import com.example.model.BaseEntity;
+import com.example.model.dto.customerDTO.CustomerAvatarDTO;
 import com.example.model.dto.customerDTO.CustomerDTO;
+import com.example.model.dto.customerDTO.CustomerResDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,8 +33,6 @@ public class Customer extends BaseEntity {
     private String phone;
 
 
-
-
     @ManyToOne
     @JoinColumn(name = "location_region_id", referencedColumnName = "id", nullable = false)
     private LocationRegion locationRegion;
@@ -42,7 +42,17 @@ public class Customer extends BaseEntity {
                 .setId(id)
                 .setFullName(fullName)
                 .setEmail(email)
-//                .setCustomerAvatar(customerAvatar.toCustomerAvatarDTO())
+                .setLocationRegion(locationRegion.toLocationRegionDTO())
+                ;
+    }
+
+    public CustomerDTO toCustomerDTO(CustomerAvatarDTO customerAvatarDTO){
+        return new CustomerDTO()
+                .setId(id)
+                .setFullName(fullName)
+                .setEmail(email)
+                .setPhone(phone)
+                .setCustomerAvatar(customerAvatarDTO)
                 .setLocationRegion(locationRegion.toLocationRegionDTO())
                 ;
     }

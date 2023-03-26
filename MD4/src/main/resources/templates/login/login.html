@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Registration Form</title>
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/assets/css/login.css">
+    <link rel="stylesheet" href="/assets/sweetalert2/v11.7.0/sweetalert2.min.css">
+    <link rel="stylesheet" href="/assets/izToast/css/iziToast.css">
+</head>
+<body>
+<div class="container" id="container">
+    <div class="form-container register-container">
+        <form id="frmRegister">
+            <h1>Register Account</h1>
+            <input type="text" placeholder="Name" id="fullNameUp" name="fullNameUp">
+            <input type="email" placeholder="Email" id="emailUp" name="emailUp">
+            <input type="text" placeholder="User name" id="usernameUp" name="usernameUp">
+            <input type="password" placeholder="Password" id="passwordUp" name="passwordUp">
+
+        </form>
+        <div><button class="submit-btn" id="btnSignUp" style="top: -80px;left: 70px">Register</button>
+        </div>
+    </div>
+
+    <div class="form-container login-container">
+        <form id="frmLogin">
+            <h1>Login Account</h1>
+            <input type="text" placeholder="User name" id="usernameIn">
+            <input type="password" placeholder="Password" id="passwordIn">
+            <div class="content">
+                <div class="checkbox">
+                    <input type="checkbox" name="checkbox" id="checkbox">
+                    <label>Remember me</label>
+                </div>
+                <div class="pass-link">
+                    <a href="#">Forgot password?</a>
+                </div>
+            </div>
+        </form>
+        <button class="submit-btn" id="btnLogin" style="top: -100px; left: 70px">Login</button>
+    </div>
+
+    <div class="overlay-container">
+        <div class="overlay">
+            <div class="overlay-panel overlay-left">
+                <h1 class="title">Hello <br> friends</h1>
+                <p>if You don't have an account, please register first ! </p>
+                <button class="ghost" id="login">Login
+                    <i class="lni lni-arrow-left login"></i>
+                </button>
+            </div>
+            <div class="overlay-panel overlay-right">
+                <h1 class="title">Welcome <br> to my Shop</h1>
+                <p>Don't have account ? Let's visit to register page.</p>
+                <button class="ghost" id="register">Register
+                    <i class="lni lni-arrow-right register"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="/assets/js/login.js"></script>
+<script src="/assets/jquery/v3.6.3/jquery-3.6.3.min.js"></script>
+<script src="/assets/jquery-validate/v1.19.5/jquery.validate.min.js"></script>
+<script src="/assets/js/appBase.js"></script>
+<script src="/assets/sweetalert2/v11.7.0/sweetalert2.all.min.js"></script>
+<script src="/assets/izToast/js/iziToast.js"></script>
+<script>
+    const page = {
+        urls: {
+            insertRegister: AppBase.API_REGISTER,
+            insertLogin: AppBase.API_LOGIN
+        },
+        elements: {},
+        loadData: {},
+        commands: {},
+        dialogs: {
+            elements: {},
+            loadData: {},
+            commands: {},
+        }
+    }
+
+    page.elements.frmRegister = $('#frmRegister');
+    page.elements.frmLogin = $('#frmLogin')
+    page.elements.btnSignUp = $('#btnSignUp');
+    page.elements.btnLogIn = $('#btnLogin');
+
+    page.elements.fullNameUp = $('#fullNameUp');
+    page.elements.emailUp = $('#emailUp');
+    page.elements.usernameUp = $('#usernameUp');
+    page.elements.passwordUp = $('#passwordUp');
+
+
+    page.elements.fullNameIn = $('#fullNameIn');
+    page.elements.emailIn = $('#emailIn');
+    page.elements.usernameIn = $('#usernameIn');
+    page.elements.passwordIn = $('#passwordIn');
+
+
+    page.elements.btnSignUp.on('click', () => {
+        let user = {
+            fullName: page.elements.fullNameUp.val(),
+            email: page.elements.emailUp.val(),
+            username: page.elements.usernameUp.val(),
+            password: page.elements.passwordUp.val(),
+
+        }
+        $.ajax({
+            headers: {
+                "accept": "application/json",
+                "content-type": "application/json"
+            },
+            type: "POST",
+            url: page.urls.insertRegister,
+            data: JSON.stringify(user)
+        })
+            .done(() => {
+                iziToast.success({
+                    title: 'Done!',
+                    message: 'Register Successfully!',
+                    position :'topRight'
+                });
+                container.classList.remove("right-panel-active");
+                page.elements.usernameIn.val(user.username);
+                page.elements.passwordIn.val(user.password);
+            })
+            .fail((error) => {
+                iziToast.warning({
+                    title: 'Caution',
+                    message: 'Register Fail !',
+                });
+            })
+    })
+
+    page.elements.btnLogIn.on('click', () => {
+        let user = {
+            username: page.elements.usernameIn.val(),
+            password: page.elements.passwordIn.val()
+        }
+        $.ajax({
+            headers: {
+                "accept": "application/json",
+                "content-type": "application/json"
+            },
+            type: "POST",
+            url: page.urls.insertLogin,
+            data: JSON.stringify(user)
+        })
+            .done((data) => {
+                iziToast.success({
+                    title: 'Success',
+                    message: 'Login Successfully!',
+                    position :'topRight'
+                });
+                setTimeout(()=>{
+                    location.href = "/customers";
+                },2000)
+            })
+            .fail((error) => {
+                iziToast.warning({
+                    title: 'Caution',
+                    message: 'Login Fail !',
+                });
+            })
+    })
+
+    page.elements.frmRegister.validate({
+        rules: {
+            fullNameUp: {
+                required: true,
+                minlength: 4,
+                maxlength: 25
+            },
+            emailUp: {
+                required: true,
+                minlength: 4,
+                maxlength: 40
+            },
+            usernameUp: {
+                required: true,
+                minlength: 3,
+                maxlength: 11
+            },
+            passwordUp: {
+                required: true,
+                minlength: 5
+            }
+        },
+        messages: {
+            fullNameUp: {
+                required: 'Full name is required',
+                minlength: 'Min character of full name is ${0}',
+                maxlength: 'Max character of full name is ${0}'
+            },
+            emailUp: {
+                required: 'Email is required',
+                minlength: 'Min character of email is ${0}',
+                maxlength: 'Max character of email is ${0}'
+            },
+            usernameUp: {
+                required: "Username  is required."
+            },
+            passwordUp: {
+                required: "Password is required.",
+                minlength: "Password must be more than 5 letters"
+            }
+        },
+        showErrors: function (errorMap, errorList) {
+            if (this.numberOfInvalids() > 0) {
+                $('#modalCreateCustomer .modal-alert-danger').removeClass("hide").addClass('show');
+            } else {
+                $("#modalCreateCustomer .modal-alert-danger").removeClass("show").addClass("hide").empty();
+                $("#frmCreate input .error").removeClass("error");
+            }
+            this.defaultShowErrors();
+        },
+        submitHandler: () => {
+            page.elements.btnSignUp();
+        }
+    })
+</script>
+
+
+</body>
+</html>

@@ -12,6 +12,6 @@ public class HomeController {
     }
     @GetMapping("/login")
     public String showLoginPage(){
-        return "login";
+        return "/login/login";
     }
 }

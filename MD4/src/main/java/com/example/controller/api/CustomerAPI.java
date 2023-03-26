@@ -185,7 +185,9 @@ public class CustomerAPI {
             throw new DataInputException("Customer is Invalid");
         }
         customerService.deActive(customerId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        Optional<CustomerAvatar> customerAvatar = customerAvatarService.findByCustomer(customerOptional.get());
+
+        return new ResponseEntity<>(customerOptional.get().toCustomerDTO(customerAvatar.get().toCustomerAvatarDTO()), HttpStatus.OK);
     }
 
     @DeleteMapping("/active/{customerId}")
@@ -195,6 +197,7 @@ public class CustomerAPI {
             throw new DataInputException("Customer is Invalid");
         }
         customerService.active(customerId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        Optional<CustomerAvatar> customerAvatar = customerAvatarService.findByCustomer(customerOptional.get());
+        return new ResponseEntity<>(customerOptional.get().toCustomerDTO(customerAvatar.get().toCustomerAvatarDTO()), HttpStatus.OK);
     }
 }
