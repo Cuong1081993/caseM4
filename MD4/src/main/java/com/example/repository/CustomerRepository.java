@@ -6,6 +6,7 @@ import com.example.model.dto.customerDTO.CustomerDTO;
 import com.example.model.dto.customerDTO.CustomerResDTO;
 import com.example.model.dto.customerDTO.CustomerUpdateAvatarResDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -67,7 +68,11 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     Boolean existsByEmailEquals(String email);
 
-
+    @Modifying
+    @Query("UPDATE Customer AS cus " +
+            "SET cus.deleted = TRUE " +
+            "WHERE cus.id = :customerId")
+    void deActive(@Param("customerId") Long customerId);
 
 
 }

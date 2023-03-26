@@ -71,7 +71,6 @@
 <!-- END wrapper -->
 
 
-
 <!-- Right Sidebar -->
 <th:block th:replace="/layout/right-bar"/>
 <!-- /Right-bar -->
@@ -92,6 +91,7 @@
             findCustomerById: AppBase.API_CUSTOMER,
             doCreate: AppBase.API_CUSTOMER,
             doUpdate: AppBase.API_CUSTOMER,
+            doDeActive : AppBase.API_CUSTOMER + '/de-active',
             getAllProvinces: AppBase.API_PROVINCE,
             getAllDistricts: AppBase.API_PROVINCE + '/district',
             getAllWards: AppBase.API_PROVINCE + '/ward',
@@ -192,6 +192,7 @@
                     $('#tbCustomer tbody').prepend(str);
                 })
                 addEventUpdate();
+                addEventDeActive();
             })
             .fail((error) => {
                 console.log(error)
@@ -332,8 +333,10 @@
 
                 page.dialogs.elements.modalCreateCustomer.modal('hide');
                 $('.update').off('click');
+                $('.deactive').off('click');
 
                 addEventUpdate();
+                addEventDeActive();
 
             })
             .fail((error) => {
@@ -405,7 +408,9 @@
                 page.dialogs.elements.modalUpdateCustomer.modal('hide');
 
                 $('.update').off('click');
+                $('.deactive').off('click');
                 addEventUpdate();
+                addEventDeActive();
             })
             .fail((error) => {
                 iziToast.error({
@@ -451,6 +456,58 @@
         });
     }
 
+    function addEventDeActive() {
+        $('.deactive').on('click', function () {
+
+            let id = $(this).data('id');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            })
+                .then((result) => {
+                    if (result.isConfirmed) {
+
+                        $.ajax({
+                            headers: {
+                                "accept": "application/json",
+                                "content-type": "application/json"
+                            },
+                            type: "DELETE",
+                            url: page.urls.doDeActive + '/' + id
+                        })
+                            .done((data) => {
+                                $("#tr_" + id).remove();
+
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'success',
+                                    title: 'Delete customer successful',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                            })
+                            .fail((jqXHR) => {
+                                let message = jqXHR.responseJSON.message
+
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'error',
+                                    title: message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                                console.log(error)
+                            })
+                    }
+                })
+        })
+    }
+
     function renderCustomer(customer, avatar, locationRegion) {
         let image_thumbnail = `${AppBase.API_CLOUDINARY}/${AppBase.SCALE_IMAGE_W_80_H_80_Q_100}/${avatar.fileFolder}/${avatar.fileName}`;
         return `
@@ -473,7 +530,7 @@
                             </button>
                         </td>
                         <td>
-                            <button class="btn btn-outline-danger delete" data-id="${customer.id}">
+                            <button class="btn btn-outline-danger deactive" data-id="${customer.id}">
                                 Delete
                             </button>
                         </td>

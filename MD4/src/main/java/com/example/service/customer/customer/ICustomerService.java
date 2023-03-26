@@ -29,4 +29,6 @@ public interface ICustomerService extends IGeneralService<Customer> {
 
     CustomerUpdateAvatarResDTO updateWithAvatar(Customer customer, MultipartFile avatarFile) throws IOException;
 
+    void deActive(Long customerId);
+
 }

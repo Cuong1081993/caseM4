@@ -1,6 +1,7 @@
 package com.example.controller.api;
 
 
+import com.example.exception.DataInputException;
 import com.example.exception.EmailExistsException;
 import com.example.exception.ResourceNotFoundException;
 import com.example.model.customer.Customer;
@@ -177,4 +178,14 @@ public class CustomerAPI {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    @DeleteMapping("/de-active/{customerId}")
+    public ResponseEntity<?> deActive(@PathVariable Long customerId){
+        Optional<Customer> customerOptional = customerService.findById(customerId);
+        if (!customerOptional.isPresent()){
+            throw new DataInputException("Customer is Invalid");
+        }
+        customerService.deActive(customerId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

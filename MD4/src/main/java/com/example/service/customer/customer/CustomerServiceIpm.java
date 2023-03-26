@@ -64,6 +64,11 @@ public class CustomerServiceIpm implements ICustomerService {
     }
 
     @Override
+    public void deActive(Long customerId) {
+        customerRepository.deActive(customerId);
+    }
+
+    @Override
     public void deletedById(Long id) {
 
     }
