@@ -28,8 +28,8 @@
     <div class="form-container login-container">
         <form id="frmLogin">
             <h1>Login Account</h1>
-            <input type="text" placeholder="User name" id="usernameIn">
-            <input type="password" placeholder="Password" id="passwordIn">
+            <input type="text" placeholder="User name" id="usernameIn" name="usernameIn">
+            <input type="password" placeholder="Password" id="passwordIn" name="passwordIn">
             <div class="content">
                 <div class="checkbox">
                     <input type="checkbox" name="checkbox" id="checkbox">
@@ -104,6 +104,10 @@
 
 
     page.elements.btnSignUp.on('click', () => {
+        page.elements.frmRegister.trigger('submit');
+    })
+
+    page.commands.register = () => {
         let user = {
             fullName: page.elements.fullNameUp.val(),
             email: page.elements.emailUp.val(),
@@ -136,9 +140,13 @@
                     message: 'Register Fail !',
                 });
             })
-    })
+    }
 
     page.elements.btnLogIn.on('click', () => {
+        page.elements.frmLogin.trigger('submit');
+    })
+
+    page.commands.login = () =>{
         let user = {
             username: page.elements.usernameIn.val(),
             password: page.elements.passwordIn.val()
@@ -168,7 +176,9 @@
                     message: 'Login Fail !',
                 });
             })
-    })
+    }
+
+
 
     page.elements.frmRegister.validate({
         rules: {
@@ -211,17 +221,37 @@
                 minlength: "Password must be more than 5 letters"
             }
         },
-        showErrors: function (errorMap, errorList) {
-            if (this.numberOfInvalids() > 0) {
-                $('#modalCreateCustomer .modal-alert-danger').removeClass("hide").addClass('show');
-            } else {
-                $("#modalCreateCustomer .modal-alert-danger").removeClass("show").addClass("hide").empty();
-                $("#frmCreate input .error").removeClass("error");
-            }
-            this.defaultShowErrors();
-        },
+
         submitHandler: () => {
-            page.elements.btnSignUp();
+            page.commands.register();
+        }
+    })
+
+    page.elements.frmLogin.validate({
+        rules: {
+
+            usernameIn: {
+                required: true,
+                minlength: 3,
+                maxlength: 11
+            },
+            passwordIn: {
+                required: true,
+                minlength: 5
+            }
+        },
+        messages: {
+            usernameIn: {
+                required: "Username  is required."
+            },
+            passwordIn: {
+                required: "Password is required.",
+                minlength: "Password must be more than 5 letters"
+            }
+        },
+
+        submitHandler: () => {
+            page.commands.login();
         }
     })
 </script>

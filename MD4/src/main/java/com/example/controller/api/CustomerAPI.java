@@ -15,6 +15,7 @@ import com.example.utils.UploadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -178,6 +179,7 @@ public class CustomerAPI {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/de-active/{customerId}")
     public ResponseEntity<?> deActive(@PathVariable Long customerId){
         Optional<Customer> customerOptional = customerService.findById(customerId);
@@ -189,7 +191,7 @@ public class CustomerAPI {
 
         return new ResponseEntity<>(customerOptional.get().toCustomerDTO(customerAvatar.get().toCustomerAvatarDTO()), HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/active/{customerId}")
     public ResponseEntity<?> active(@PathVariable Long customerId){
         Optional<Customer> customerOptional = customerService.findById(customerId);

@@ -67,8 +67,12 @@
     <!-- ============================================================== -->
     <!-- End Page content -->
     <!-- ============================================================== -->
-    <div id="loading">
-        <img src="/assets/image/loading.gif" alt="">
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+
     </div>
 </div>
 <!-- END wrapper -->
@@ -548,16 +552,16 @@
                                 })
                             })
                             .fail((jqXHR) => {
-                                let message = jqXHR.responseJSON.message
+                                let statusCode = jqXHR.status;
 
-                                Swal.fire({
-                                    position: 'center',
-                                    icon: 'error',
-                                    title: message,
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                })
-                                console.log(error)
+                                if (statusCode === 403) {
+                                    Swal.fire({
+                                        position: 'center',
+                                        icon: 'error',
+                                        title: 'You dont have permission',
+                                        showConfirmButton: true
+                                    })
+                                }
                             })
                     }
                 })
@@ -608,15 +612,16 @@
                                 })
                             })
                             .fail((jqXHR) => {
-                                let message = jqXHR.responseJSON.message
+                                let statusCode = jqXHR.status;
 
-                                Swal.fire({
-                                    position: 'center',
-                                    icon: 'error',
-                                    title: message,
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                })
+                                if (statusCode === 403) {
+                                    Swal.fire({
+                                        position: 'center',
+                                        icon: 'error',
+                                        title: 'You dont have permission',
+                                        showConfirmButton: true
+                                    })
+                                }
                             })
                     }
                 })
